@@ -105,7 +105,77 @@ app.get('/reservations/:id', async (req, res) => {
 
 app.get('/reservations', async (req, res) => {
     const data = await getReservations()
-        .then((data) =>{
+        .then((data) => {
+            data.agent = agent;
+            const str = JSON.stringify({data});
+            console.log(str);
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(str);
+        })
+        .catch(err => {
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            const str = JSON.stringify({data: err});
+            res.end(str);
+            return;
+        });
+});
+
+app.post('/reservations', async (req, res) => {
+    const data = req.body;
+    //TODO fix this and make it post data the way it supposed to
+    const result = await setReservation(data)
+        .then((data) => {
+            data.agent = agent;
+            const str = JSON.stringify({data});
+            console.log(str);
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(str)
+        })
+        .catch(err => {
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            const str = JSON.stringify({data: err });
+            res.end(str);
+            return;
+        });
+});
+
+app.get('/users/:id', async (req, res) => {
+   await microservices.user.getUser(req.params.id)
+       .then((data) => {
+           data.agent = agent;
+           const str = JSON.stringify({data});
+           console.log(str);
+           res.writeHead(200, {'Content-Type': 'application/json'});
+           res.end(str)
+       })
+        .catch(err => {
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            const str = JSON.stringify({data: err });
+            res.end(str);
+            return;
+        });
+});
+
+app.get('/users', async (req, res) => {
+    const data = await microservices.user.getUsers()
+        .then((data) => {
+            data.agent = agent;
+            const str = JSON.stringify({data});
+            console.log(str);
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(str)
+        })
+        .catch(err => {
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            const str = JSON.stringify({data: err });
+            res.end(str);
+            return;
+        });
+});
+
+app.post('/users', async (req, res) => {
+    const data = await microservices.user.setUser(req.body)
+        .then((data) => {
             data.agent = agent;
             const str = JSON.stringify({data });
             console.log(str);
@@ -119,78 +189,6 @@ app.get('/reservations', async (req, res) => {
             return;
         });
 
-app.post('/reservations', async (req, res) => {
-    const data = req.body;
-    //TODO fix this and make it post data the way it supposed to
-    const result = await setReservation(data)
-        .then((data) =>{
-            data.agent = agent;
-            const str = JSON.stringify({data });
-            console.log(str);
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(str)
-        .catch(err => {
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            const str = JSON.stringify({data: err });
-            res.end(str);
-            return;
-        });
-});
-
-app.get('/users/:id', async (req, res) => {
-   await microservices.user.getUser(req.params.id)
-        .then((data) =>{
-            data.agent = agent;
-            const str = JSON.stringify({data });
-            console.log(str);
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(str)
-        .catch(err => {
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            const str = JSON.stringify({data: err });
-            res.end(str);
-            return;
-        });
-});
-
-app.get('/users', async (req, res) => {
-    const data = await microservices.user.getUsers()
-        .then((data) =>{
-            data.agent = agent;
-            const str = JSON.stringify({data });
-            console.log(str);
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(str)
-        .catch(err => {
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            const str = JSON.stringify({data: err });
-            res.end(str);
-            return;
-        });
-});
-
-app.post('/users', async (req, res) => {
-    const data = await microservices.user.setUser(req.body)
-        .catch(err => {
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            const str = JSON.stringify({data: err });
-            res.end(str);
-            return;
-        });
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    data.agent = agent;
-    const str = JSON.stringify({data });
-    console.log(str);
-    res.end(str);
-});
-
-app.get('/admin/commands', async (req, res) => {
-    const commands = [];
-    commands.push({method: 'POST', body: {command: 'SEED_TRAVEL_AGENT', description: 'Seeds the Travel Agent of the microservice with data'}});
-    const data = commands;
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    const str = JSON.stringify({data});
-    res.end(str);
 });
 
 const getServiceUrlsConfigSync = () =>{
@@ -201,31 +199,6 @@ const getServiceUrlsConfigSync = () =>{
     });
     return obj;
 };
-
-app.post('/admin/commands', async (req, res) => {
-    console.log({message: 'received data', url: '/admin/commands', method: 'POST', body: req.body});
-    const input = req.body;
-    let result = null;
-    switch(input.command.toUpperCase()){
-        case 'SEED_TRAVEL_AGENT':
-            // seed the inventoryItems
-            result = await seedTravelAgent(getServiceUrlsConfigSync);
-            break;
-    }
-    let str = '';
-    if(!result){
-        const message = {message: 'Unknown Command', command: input.name};
-        console.error(message);
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        str = JSON.stringify({message});
-    }else{
-        res.writeHead(201, {'Content-Type': 'application/json'});
-        const str = JSON.stringify({data: {command: input.name, result}});
-        console.log({method: 'post', data: {command: input.name, result}});
-    }
-    res.end(str);
-});
-
 
 const server = app.listen(port, function () {
     const host = server.address().address;
@@ -251,4 +224,4 @@ process.on('SIGINT', function () {
     shutdown('SIGINT');
 });
 
-module.exports = {server, shutdown};
+module.exports = {server, shutdown}
