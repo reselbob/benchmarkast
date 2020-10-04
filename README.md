@@ -4,17 +4,25 @@
 
 ![architecture](./images/architecture/sync.png)
 
+## Setting Up The Required MongoDB Instance
+
 In order to work with the example, you'll need to set up a mongdb database somewhere that is accessible from
 the cloud. This example uses the `mongodb` cloud service,  [Mongo Cloud Service](https://www.mongodb.com/). Mongo Cloud Service offers free sandboxes for educational purposes.
 
 You're going to have to set up 5 databases, `airline`, `auto`, `hotel`, `user` and `agent`. You'll find
 detailed, illustrated instructions for setting up these databases [here](docs/seeding.md).
 
----- 
 
-Before you start, please be advised that the MOA is running inside a Kubernetes cluster. The current state of the code is that the microservices are running internal to Kubernetes. Hence, the application is facilitating internal "travel" behavior. The work of creating the instruction for using the Benchmark Application is underway.
 
 ---- 
+
+**NOTE TO DEVELOPERS**
+
+Before you start, please be advised that the MOA is running inside a Kubernetes cluster. The current state of the code is that the microservices are running internal to Kubernetes. Hence, the application is facilitating internal "travel" behavior. The work of creating the instructions for using the Benchmark Application is underway.
+
+---- 
+
+## Getting the Benchmark App Up and Running on K8S.
 
 **Step 1**: Go to a Minikube playground on Katacoda
 
@@ -28,7 +36,7 @@ Before you start, please be advised that the MOA is running inside a Kubernetes 
 
 **Step 3**: Navigate to the synchronous version of the MOA
 
-`cd benchmarkast`
+`cd benchmarkast/src`
 
 **Step 4**: Run the shell script the creates a local Docker registry and seed the registry
 with the containers representing each microservice 
@@ -36,7 +44,7 @@ with the containers representing each microservice
 `sh docker-seed.sh`
 
 **Step 5**: Add your `mLab` authentication data to the Kubernetes secret manifest file,
- `benchmarkast/kubernetes/manifests/travelagent-secret.yaml`;
+ `benchmarkast/src/kubernetes/manifests/travelagent-secret.yaml`;
  
  **BE ADVISED!!!** Step 5 is a critial step. **If you don't configure access information to mLab in
  the secret properly**, the application will not work.
