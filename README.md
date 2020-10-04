@@ -1,4 +1,4 @@
-# Setting Up the Synchronous Version of the Travel Agent MOA to Run Under Minikube
+# Setting Up The Benchmark MOA to Run Under Minikube
 
 **(MOA = Microservices Oriented Architecture)**
 
@@ -26,11 +26,11 @@ internal to Kubernetes. Hence, the application is facilitating internal "travel"
 
 **Step 2**: Load in this source code
 
-`git clone https://github.com/reselbob/travelagent.git`
+`https://github.com/reselbob/benchmarkast.git`
 
 **Step 3**: Navigate to the synchronous version of the MOA
 
-`cd travelagent/sync/`
+`cd benchmarkast`
 
 **Step 4**: Run the shell script the creates a local Docker registry and seed the registry
 with the containers representing each microservice 
@@ -38,14 +38,14 @@ with the containers representing each microservice
 `sh docker-seed.sh`
 
 **Step 5**: Add your `mLab` authentication data to the Kubernetes secret manifest file,
- `travelagent/sync/kubernetes/manifests/travelagent-secret.yaml`;
+ `benchmarkast/kubernetes/manifests/travelagent-secret.yaml`;
  
  **BE ADVISED!!!** Step 5 is a critial step. **If you don't configure access information to mLab in
  the secret properly**, the application will not work.
  
  The following shows the "placeholder" secret manifest, `travelagent-secret.yaml` for the application.
- 
- ```yaml
+
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -83,15 +83,21 @@ instructor for help. Configuring the secret properly is a critical path item.
 
 You'll get output similar to the following:
 
-**Step 10**: Find the IP address of the cluster
+**Step 10**: Turn on the Kubernetes proxy
 
-`kubectl cluster-info`
+`kubectl proxy`
+
+---
+
+**BE ADVISED!!!** THE APPLICATION IS UNDER REFACTOR. THE FOLLOWING STEPS ARE NOT STABLE.
+
+---
 
 **Step 11**: Call the `bestDeal` endpoint the `agent` service exposes using a `curl` command like so:
 
 In this case we'll get the Best Deal from the airline
 
-`curl IP_OF_CLUSTER:NODE-PORT/bestDeal/airline`
+`curl 127.0.0.1:<NODE-PORT>/bestDeal/airline`
 
 You'll get output similar to the following:
 
@@ -114,9 +120,10 @@ You'll get output similar to the following:
 
 Now get the best deal from the `hotel` microservice.
 
-`curl IP_OF_CLUSTER:NODE-PORT/bestDeal/hotel`
+`curl 127.0.0.1:<NODE-PORT>/bestDeal/hotel`
 
 You'll get output similar to the following:
+
 ```json
 {
 	"data": {
@@ -138,11 +145,12 @@ You'll get output similar to the following:
 		"agent": "Way Cool Travel Agent"
 	}
 }
+
 ```
 
 Finally  get the best deal from the `auto` microservice.
 
-`curl IP_OF_CLUSTER:NODE-PORT/bestDeal/auto`
+`curl curl 127.0.0.1:<NODE-PORT>/bestDeal/bestDeal/auto`
 
 You'll get output similar to the following:
 
