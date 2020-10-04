@@ -8,7 +8,7 @@ In order to work with the example, you'll need to set up a mongdb database somew
 the cloud. This example uses the `mongodb` cloud service,  [Mongo Cloud Service](https://www.mongodb.com/). Mongo Cloud Service offers free sandboxes for educational purposes.
 
 You're going to have to set up 5 databases, `airline`, `auto`, `hotel`, `user` and `agent`. You'll find
-detailed, illustrated instructions for setting up these databases [here](seeding.md).
+detailed, illustrated instructions for setting up these databases [here](docs/seeding.md).
 
 ---- 
 
