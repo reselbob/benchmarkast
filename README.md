@@ -30,9 +30,9 @@ Before you start, please be advised that the MOA is running inside a Kubernetes 
 
 `https://katacoda.com/javajon/courses/kubernetes-fundamentals/minikube`
 
-**Step 2**: Load in this source code
+**Step 2**: Clone the respository
 
-`https://github.com/reselbob/benchmarkast.git`
+`git clone https://github.com/reselbob/benchmarkast.git`
 
 **Step 3**: Navigate to the synchronous version of the MOA
 
@@ -65,9 +65,16 @@ data:
   usersurl: xxxxxx
 ```
 
-You are going to enter the MongoDB (mlab) url with user and password for each database that backs
-the particular Travel Agent service. Again, this is really important. Do not hesitate to ask the
-instructor for help. Configuring the secret properly is a critical path item.
+You are going to enter the MongoDB () url with user and password for each database that backs the particular Travel Agent service. Again, this is really important. Configuring the secret properly is a critical path item.
+
+---
+**How to `base64` encode a string**
+
+```
+echo  'linuxhint.com' | base64
+
+```
+---
 
 **Step 6**: Install the Kubernetes artifacts
 
