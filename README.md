@@ -2,8 +2,6 @@
 
 **(MOA = Microservices Oriented Architecture)**
 
-![architecture](./images/architecture/sync.png)
-
 ## Setting Up The Required MongoDB Instance
 
 In order to work with the example, you'll need to set up a mongdb database somewhere that is accessible from
@@ -12,7 +10,9 @@ the cloud. This example uses the `mongodb` cloud service,  [Mongo Cloud Service]
 You're going to have to set up 5 databases, `airline`, `auto`, `hotel`, `user` and `agent`. You'll find
 detailed, illustrated instructions for setting up these databases [here](docs/seeding.md).
 
+## The Benchmark App RESTful API
 
+![architecture](./images/architecture/sync.png)
 
 ---- 
 
