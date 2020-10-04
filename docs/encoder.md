@@ -1,0 +1,1 @@
+# Using the Benchmark Secret Encoding Tool## Objective## Getting Up and Running## Using the Tool
