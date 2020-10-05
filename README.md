@@ -12,7 +12,7 @@ detailed, illustrated instructions for setting up these databases [here](docs/se
 
 ## The Benchmark App RESTful API
 
-![architecture](./images/architecture/sync.png)
+![architecture](./images/architecture/api.png)
 
 ---- 
 
